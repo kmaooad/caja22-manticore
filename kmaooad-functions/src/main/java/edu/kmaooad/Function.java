@@ -37,4 +37,37 @@ public class Function {
             return request.createResponseBuilder(HttpStatus.OK).body("Hello, " + name).build();
         }
     }
+
+    @FunctionName("TelegramWebhookMessageId")
+    public HttpResponseMessage runMessageId(
+        @HttpTrigger(
+            name = "req",
+            methods = {HttpMethod.POST},
+            authLevel = AuthorizationLevel.FUNCTION)
+            HttpRequestMessage<Optional<String>> request,
+        final ExecutionContext context
+    ) {
+
+        context.getLogger().info("Java HTTP trigger processed a request.");
+
+        try
+        {
+            final String RequestBody = request.getBody().orElse(null);
+            if (RequestBody != null)
+            {
+                JSONObject JSONBody = new JSONObject(RequestBody);
+                final int MessageID = JSONBody.getJSONObject("message").getInt("message_id");
+
+                return request.createResponseBuilder(HttpStatus.OK).body("200 OK " + MessageID).build();
+            }
+            else
+            {
+                return request.createResponseBuilder(HttpStatus.BAD_REQUEST).body("Empty Body received.").build();
+            }
+        }
+        catch (Exception e)
+        {
+            return request.createResponseBuilder(HttpStatus.BAD_REQUEST).body("BAD REQUEST").build();
+        }
+    }
 }
