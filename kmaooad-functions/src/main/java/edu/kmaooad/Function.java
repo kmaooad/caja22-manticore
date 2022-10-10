@@ -11,6 +11,8 @@ import com.microsoft.azure.functions.annotation.HttpTrigger;
 
 import java.util.Optional;
 
+import org.json.JSONObject;
+
 /**
  * Azure Functions with HTTP Trigger.
  */
