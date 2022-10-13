@@ -31,27 +31,6 @@ public class Function {
             final ExecutionContext context) {
         context.getLogger().info("Java HTTP trigger processed a request.");
 
-        final String name = request.getBody().orElse(null);
-
-        if (name == null) {
-            return request.createResponseBuilder(HttpStatus.BAD_REQUEST).body("Please pass a name in the request body").build();
-        } else {
-            return request.createResponseBuilder(HttpStatus.OK).body("Hello, " + name).build();
-        }
-    }
-
-    @FunctionName("TelegramWebhookMessageId")
-    public HttpResponseMessage runMessageId(
-        @HttpTrigger(
-            name = "req",
-            methods = {HttpMethod.POST},
-            authLevel = AuthorizationLevel.FUNCTION)
-            HttpRequestMessage<Optional<String>> request,
-        final ExecutionContext context
-    ) {
-
-        context.getLogger().info("Java HTTP trigger processed a request.");
-
         try
         {
             final String RequestBody = request.getBody().orElse(null);
