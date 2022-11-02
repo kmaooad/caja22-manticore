@@ -8,6 +8,8 @@ import com.microsoft.azure.functions.HttpStatus;
 import com.microsoft.azure.functions.annotation.AuthorizationLevel;
 import com.microsoft.azure.functions.annotation.FunctionName;
 import com.microsoft.azure.functions.annotation.HttpTrigger;
+import com.mongodb.ConnectionString;
+import com.mongodb.MongoClientSettings;
 import com.mongodb.client.MongoClient;
 import com.mongodb.client.MongoClients;
 import com.mongodb.client.MongoCollection;
@@ -38,9 +40,12 @@ public class Function {
 
         try {
             final String requestBodyString = request.getBody().orElseThrow(EmptyRequestBodyException::new);
-
-            String connectionStringUri = "mongodb+srv://manticore:SaYvqqSw7MYjW1v5@manticore-db.9wxedmu.mongodb.net/?retryWrites=true&w=majority";
-            try (MongoClient mongoClient = MongoClients.create(connectionStringUri)) {
+            
+            ConnectionString connectionString = new ConnectionString("mongodb://manticore:SaYvqqSw7MYjW1v5@ac-duwhlzm-shard-00-00.9wxedmu.mongodb.net:27017,ac-duwhlzm-shard-00-01.9wxedmu.mongodb.net:27017,ac-duwhlzm-shard-00-02.9wxedmu.mongodb.net:27017/?ssl=true&replicaSet=atlas-tnukuv-shard-0&authSource=admin&retryWrites=true&w=majority");
+            MongoClientSettings settings = MongoClientSettings.builder()
+                    .applyConnectionString(connectionString)
+                    .build();
+            try (MongoClient mongoClient = MongoClients.create(settings)) {
                 MongoDatabase database = mongoClient.getDatabase("manticore-db");
                 MongoCollection<Document> collection = database.getCollection("updates");
                 Document doc = Document.parse(requestBodyString);
