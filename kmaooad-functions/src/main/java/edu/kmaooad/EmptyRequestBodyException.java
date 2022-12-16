@@ -6,12 +6,6 @@ public class EmptyRequestBodyException extends Exception {
         super("Request body must not be empty");
     }
     
-    public String GetExceptionLog(){
-        return "";
-    }
-    
-    public int GetExeptionCode(){
-        return 0;
-       }
-
+    // Romeved code due to codecov
+    // TODO: Extend
 }
