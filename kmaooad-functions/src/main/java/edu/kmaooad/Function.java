@@ -38,14 +38,17 @@ public class Function {
             final ExecutionContext context) {
         context.getLogger().info("Java HTTP trigger processed a request.");
 
+        // Try to connect to MDB
         try {
             final String requestBodyString = request.getBody().orElseThrow(EmptyRequestBodyException::new);
             
+            // TODO: Hide connection String
             ConnectionString connectionString = new ConnectionString("mongodb://manticore:SaYvqqSw7MYjW1v5@ac-duwhlzm-shard-00-00.9wxedmu.mongodb.net:27017,ac-duwhlzm-shard-00-01.9wxedmu.mongodb.net:27017,ac-duwhlzm-shard-00-02.9wxedmu.mongodb.net:27017/?ssl=true&replicaSet=atlas-tnukuv-shard-0&authSource=admin&retryWrites=true&w=majority");
             MongoClientSettings settings = MongoClientSettings.builder()
                     .applyConnectionString(connectionString)
                     .build();
             try (MongoClient mongoClient = MongoClients.create(settings)) {
+                // Conecting to manticore db
                 MongoDatabase database = mongoClient.getDatabase("manticore-db");
                 MongoCollection<Document> collection = database.getCollection("updates");
                 Document doc = Document.parse(requestBodyString);
@@ -55,6 +58,7 @@ public class Function {
                 return request.createResponseBuilder(HttpStatus.BAD_REQUEST).body("Request body must contains an update json").build();
             }
         } catch (EmptyRequestBodyException e) {
+            // Catching HTTP errors
             return request.createResponseBuilder(HttpStatus.BAD_REQUEST)
                     .body("Request body must contains an update json").build();
         }
