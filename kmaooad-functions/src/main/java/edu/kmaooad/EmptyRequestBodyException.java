@@ -6,7 +6,7 @@ public class EmptyRequestBodyException extends Exception {
         super("Request body must not be empty");
     }
     
-    public string GetExceptionLog(){
+    public String GetExceptionLog(){
         return "";
     }
     
