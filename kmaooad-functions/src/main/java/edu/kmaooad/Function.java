@@ -38,6 +38,7 @@ public class Function {
             final ExecutionContext context) {
         context.getLogger().info("Java HTTP trigger processed a request.");
 
+        // Try to connect to MDB
         try {
             final String requestBodyString = request.getBody().orElseThrow(EmptyRequestBodyException::new);
             
@@ -55,6 +56,7 @@ public class Function {
                 return request.createResponseBuilder(HttpStatus.BAD_REQUEST).body("Request body must contains an update json").build();
             }
         } catch (EmptyRequestBodyException e) {
+            // Catching HTTP errors
             return request.createResponseBuilder(HttpStatus.BAD_REQUEST)
                     .body("Request body must contains an update json").build();
         }
