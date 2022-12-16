@@ -19,6 +19,7 @@ import static org.mockito.Mockito.*;
 public class FunctionTest {
 
     private static final String BAD_RESPONSE = "Request body must contains an update json";
+    private static final String SUCC = "Successfully inserted";
 
     private HttpRequestMessage<Optional<String>> getRequest(Optional<String> queryBody) {
         // Setup
@@ -86,7 +87,7 @@ public class FunctionTest {
                 "}")), getContext());
         // Verify
         assertEquals(HttpStatus.OK, ret.getStatus());
-        assertEquals("Successfully inserted", ret.getBody());
+        assertEquals(SUCC, ret.getBody());
     }
 
 }
