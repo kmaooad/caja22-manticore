@@ -7,11 +7,11 @@ public class EmptyRequestBodyException extends Exception {
     }
     
     public string GetExceptionLog(){
-        return ""
+        return "";
     }
     
     public int GetExeptionCode(){
-        return 0
+        return 0;
        }
 
 }
